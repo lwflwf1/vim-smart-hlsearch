@@ -1,52 +1,32 @@
 " Description   : Smart highlight search and jump
 " Maintainer    : lwflwf1
-" Website       : https://github.com/lwflwf1/
+" Website       : https://github.com/lwflwf1/vim-smart-hlsearch
 " Created Time  : 2021-04-24 13:17:59
-" Last Modified : 2021-04-29 15:19:52
-" File          : smart-hlsearch.vim
-" Version       : 0.1.0
+" Last Modified : 2021-04-29 16:48:44
+" File          : vim-smart-hlsearch.vim
+" Version       : 0.1.2
 " License       : MIT
 
-set hlsearch
-let s:jump_post = 'zvzz'
-function s:wrapper(action) abort
-    if mode() ==# 'c' 
-    \ && !(getcmdtype() =~# '[/?]'
-    \ || (getcmdtype() ==# ':' && match(getcmdline()[0:1], '[/?]') !=# -1))
-        return a:action
-    endif
-    silent! autocmd! nohlsearch_group
-    silent! autocmd! nohlsearch_on_insert_leave
-    " if a:action ==? "\<esc>"
-    "     let s:jump_post = ''
-    " endif
-    return a:action."\<Plug>(jump-after)"
+if exists("g:loaded_smart_hlsearch")
+    finish
+endif
 
-endfunction
+let g:loaded_smart_hlsearch = 1
 
-function s:jump_after() abort
-    augroup nohlsearch_group
-        autocmd!
-        " autocmd InsertEnter * call s:nohlsearch_on_insert_leave() | autocmd! nohlsearch_group
-        autocmd InsertEnter * call feedkeys("\<c-o>:\<c-u>nohlsearch\<cr>") | autocmd! nohlsearch_group
-        autocmd CursorMoved * call feedkeys(":\<c-u>nohlsearch\<cr>") | autocmd! nohlsearch_group
-    augroup END
+let s:save_cpo = &cpo
+set cpo&vim
 
-    return s:jump_post
-endfunction
+let g:smart_hlsearch_jump_post = 'zvzz'
 
-" function s:nohlsearch_on_insert_leave() abort
-"     augroup nohlsearch_on_insert_leave_group
-"         autocmd!
-"         autocmd InsertLeave * call feedkeys(":\<c-u>nohlsearch\<cr>") | autocmd! nohlsearch_on_insert_leave_group
-"     augroup END
-" endfunction
+nnoremap <expr> <Plug>(jump-after) smart_hlsearch#jump_after()
+nmap <expr> n smart_hlsearch#wrapper('n')
+nmap <expr> N smart_hlsearch#wrapper('N')
+nmap <expr> * smart_hlsearch#wrapper('*')
+nmap <expr> # smart_hlsearch#wrapper('#')
+nmap <expr> g* smart_hlsearch#wrapper('g*')
+nmap <expr> g# smart_hlsearch#wrapper('g#')
+cmap <expr> <cr> smart_hlsearch#wrapper("\<cr>")
 
-nnoremap <expr> <Plug>(jump-after) <SID>jump_after()
-nmap <expr> n <SID>wrapper('n')
-nmap <expr> N <SID>wrapper('N')
-nmap <expr> * <SID>wrapper('*')
-nmap <expr> # <SID>wrapper('#')
-nmap <expr> g* <SID>wrapper('g*')
-nmap <expr> g# <SID>wrapper('g#')
-cmap <expr> <cr> <SID>wrapper("\<cr>")
+let &cpo = s:save_cpo
+unlet s:save_cpo
+" FIXME: when input a wrong g/ command(g/abc/yy), can not auto stop hlsearch
