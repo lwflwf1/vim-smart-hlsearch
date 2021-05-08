@@ -2,9 +2,9 @@
 " Maintainer    : lwflwf1
 " Website       : https://github.com/lwflwf1/vim-smart-hlsearch
 " Created Time  : 2021-04-24 13:17:59
-" Last Modified : 2021-04-29 16:48:44
+" Last Modified : 2021-05-08 10:58:50
 " File          : vim-smart-hlsearch.vim
-" Version       : 0.1.2
+" Version       : 0.1.3
 " License       : MIT
 
 if exists("g:loaded_smart_hlsearch")
@@ -16,7 +16,7 @@ let g:loaded_smart_hlsearch = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:smart_hlsearch_jump_post = 'zvzz'
+let g:smart_hlsearch_jump_post = get(g:, 'smart_hlsearch_jump_post', 'zvzz')
 
 nnoremap <expr> <Plug>(jump-after) smart_hlsearch#jump_after()
 nmap <expr> n smart_hlsearch#wrapper('n')
