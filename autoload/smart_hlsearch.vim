@@ -2,15 +2,15 @@
 " Maintainer    : lwflwf1
 " Website       : https://github.com/lwflwf1/vim-smart-hlsearch
 " Created Time  : 2021-04-29 15:28:30
-" Last Modified : 2021-05-08 10:58:48
+" Last Modified : 2021-05-23 16:01:18
 " File          : vim-smart-hlsearch.vim
-" Version       : 0.1.3
+" Version       : 0.1.4
 " License       : MIT
 
 function! smart_hlsearch#wrapper(action) abort
     if mode() ==# 'c' 
     \ && !(getcmdtype() =~# '[/?]'
-    \ || (getcmdtype() ==# ':' && match(getcmdline()[0:1], '[/?]') !=# -1))
+    \ || (getcmdtype() ==# ':' && match(getcmdline()[0:2], '[/?]') !=# -1))
         return a:action
     endif
     silent! autocmd! nohlsearch_group

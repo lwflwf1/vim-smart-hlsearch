@@ -2,9 +2,9 @@
 " Maintainer    : lwflwf1
 " Website       : https://github.com/lwflwf1/vim-smart-hlsearch
 " Created Time  : 2021-04-24 13:17:59
-" Last Modified : 2021-05-08 10:58:50
+" Last Modified : 2021-05-23 16:01:29
 " File          : vim-smart-hlsearch.vim
-" Version       : 0.1.3
+" Version       : 0.1.4
 " License       : MIT
 
 if exists("g:loaded_smart_hlsearch")
